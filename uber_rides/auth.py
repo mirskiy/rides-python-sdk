@@ -146,7 +146,7 @@ class AuthorizationCodeGrant(OAuth2):
     access token from Uber.
     """
 
-    def __init__(self, client_id, scopes, client_secret, redirect_url):
+    def __init__(self, client_id, scopes, client_secret, redirect_url, state_token=None):
         """Initialize AuthorizationCodeGrant Class.
 
         Parameters
@@ -166,7 +166,10 @@ class AuthorizationCodeGrant(OAuth2):
         """
         super(AuthorizationCodeGrant, self).__init__(client_id, scopes)
         self.redirect_url = redirect_url
-        self.state_token = self._generate_state_token()
+        if state_token is not None:
+            self.state_token = state_token
+        else:
+            self.state_token = self._generate_state_token()
         self.client_secret = client_secret
 
     def _generate_state_token(self, length=32):
